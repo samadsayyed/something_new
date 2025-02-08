@@ -31,6 +31,8 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         </div>
     </body>
 </html>
