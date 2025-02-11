@@ -19,8 +19,8 @@ class RecitationController extends Controller
         // Step 2: Validate the request
         try {
             $validatedData = $request->validate([
-                'durud_count' => 'required|integer|min:0',
-                'para_count' => 'nullable|integer|min:0',
+                'durud_count' => 'nullable|min:0',
+                'para_count' => 'nullable|min:0',
             ]);
             \Log::info('Validation successful:', $validatedData);
         } catch (\Exception $e) {
@@ -32,8 +32,8 @@ class RecitationController extends Controller
         $recitationData = [
             'user_id' => $user->id,
             'date' => now()->toDateString(),
-            'durud_count' => $request->durud_count,
-            'quran_para_count' => $request->para_count,
+           'durud_count' => (int) $request->durud_count,
+            'quran_para_count' => (int) $request->para_count,
         ];
         \Log::info('Prepared recitation data:', $recitationData);
 
@@ -50,8 +50,4 @@ class RecitationController extends Controller
         return redirect()->route('dashboard')->with('success', 'Recitation data added successfully!');
 
     }
-
-    
-    
-
 }

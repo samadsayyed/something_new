@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Recitation;
 use App\Http\Middleware\ApiTokenMiddleware;
 use App\Http\Controllers\Api\RecitationApiController;
-
+use Carbon\Carbon;  
 
 Route::middleware([ApiTokenMiddleware::class])->group(function () {
     Route::get('/durud-portal/api/recitations', [RecitationApiController::class, 'getCountsByCountry']);
@@ -28,17 +28,42 @@ Route::prefix('durud-portal')->group(function () {
         return Auth::check() ? redirect('/durud-portal/dashboard') : redirect('/durud-portal/login');
     });
 
-    // Dashboard Route
     Route::get('/dashboard', function () {
         $user = Auth::user();
-
-        // Fetch recitation data for the logged-in user
+    
+        // Fetch recitation data for the logged-in user, grouped by date
         $recitations = Recitation::where('user_id', $user->id)
             ->orderBy('date', 'asc')
-            ->get();
+            ->get()
+            ->groupBy(function ($date) {
+                // Group by date (ignoring time)
+                return Carbon::parse($date->date)->format('Y-m-d');  // This gives you the date in 'YYYY-MM-DD' format
+            });
+            \Log::info('Prepared recitation data: ' . json_encode($recitations, JSON_PRETTY_PRINT));
+        // Prepare the recitations with their total count per day
+        $dailyTotals = $recitations->map(function ($dayRecitations) {
+            // Calculate the total recitations for the day
+            $totalDurud = $dayRecitations->sum('durud_count');
+            $totalPara = $dayRecitations->sum('quran_para_count');
+            $total = $totalDurud + $totalPara;  // Total recitations for the day
+            
+            return [
+                'date' => $dayRecitations->first()->date,  // Use the first recitation entry to get the date
+                'total_durud' => $totalDurud,
+                'total_para' => $totalPara,
+                'total' => $total,
+                'recitations' => $dayRecitations,  // Optional, in case you want to display the individual recitations
+            ];
+        });
 
-        return view('dashboard', compact('recitations'));
+        // \Log::info('Prepared recitation data: ' . json_encode($recitationData, JSON_PRETTY_PRINT));
+
+    
+        return view('dashboard', compact('dailyTotals'));
     })->middleware(['auth', 'verified'])->name('dashboard');
+    
+    
+    
 
     // Authenticated Routes
     Route::middleware('auth')->group(function () {
