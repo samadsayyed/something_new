@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
+
+
 
 class RegisteredUserController extends Controller
 {
@@ -53,7 +57,15 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // Auth::login($user);
+        $encryptedEmail = Crypt::encryptString($user->email);
+
+        $enableUrl = route('account.verify', ['token' => $encryptedEmail]);
+
+    // Send the email
+    Mail::send('account.enable', ['user' => $user, 'url' => $enableUrl], function ($message) use ($user) {
+        $message->to($user->email)
+                ->subject('Enable Your Account');
+    });
 
         // Redirect to the login page instead of the dashboard
         return redirect()->route('login');

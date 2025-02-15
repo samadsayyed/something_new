@@ -101,28 +101,29 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const ctx = document.getElementById("recitationChart").getContext("2d");
-
+        
                 const data = {
                     labels: @json($dailyTotals->pluck('date')),
-                    datasets: [{
+                    datasets: [
+                        {
                             label: "Durud Read",
                             data: @json($dailyTotals->pluck('total_durud')),
+                            backgroundColor: "rgba(0, 0, 255, 0.5)",
                             borderColor: "blue",
-                            backgroundColor: "rgba(0, 0, 255, 0.2)",
-                            fill: true
+                            borderWidth: 1
                         },
                         {
                             label: "Quran Para Read",
                             data: @json($dailyTotals->pluck('total_para')),
+                            backgroundColor: "rgba(0, 128, 0, 0.5)",
                             borderColor: "green",
-                            backgroundColor: "rgba(0, 128, 0, 0.2)",
-                            fill: true
+                            borderWidth: 1
                         }
                     ]
                 };
-
+        
                 new Chart(ctx, {
-                    type: "line",
+                    type: "bar",
                     data: data,
                     options: {
                         responsive: true,
@@ -152,6 +153,7 @@
                 });
             });
         </script>
+        
 
         <script>
             document.getElementById('recitationForm').addEventListener('submit', function(event) {

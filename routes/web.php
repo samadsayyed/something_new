@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecitationController;
+use App\Http\Controllers\Api\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Recitation;
@@ -20,8 +21,6 @@ Route::get('/', function () {
 
 // Group all routes under `/durud-portal`
 Route::prefix('durud-portal')->group(function () {
-
-    
 
     // Redirect `/durud-portal` to login or dashboard
     Route::get('/', function () {
@@ -62,7 +61,15 @@ Route::prefix('durud-portal')->group(function () {
         return view('dashboard', compact('dailyTotals'));
     })->middleware(['auth', 'verified'])->name('dashboard');
     
-    
+    Route::get('/verify-email', function () {
+        return view('auth.verify-email');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.notice');
+
+
+    Route::get('/account/enable', [VerifyEmailController::class, 'verifyUser'])
+    ->name('account.verify');
+
+
     
 
     // Authenticated Routes

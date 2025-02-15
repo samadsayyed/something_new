@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,12 +25,30 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $credentials = $request->only('email', 'password');
+    
+        $user = User::where('email', $credentials['email'])->first();
+
+        // \Log::info($user);
+    
+        if (!$user) {
+            return back()->withErrors(['email' => 'The provided credentials are incorrect.']);
+        }
+    
+        if (!$user->is_verified == 0) {
+            \Log::info($user->is_verified);
+            return back()->withErrors(['email' => 'Your account is not verified. Please check your email.']);
+        }
+
+        \Log::info($user->is_verified);
+    
         $request->authenticate();
-
+    
         $request->session()->regenerate();
-
+    
         return redirect()->intended(route('dashboard', absolute: false));
     }
+    
 
     /**
      * Destroy an authenticated session.
