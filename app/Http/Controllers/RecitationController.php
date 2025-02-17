@@ -11,10 +11,8 @@ class RecitationController extends Controller
     public function create(Request $request)
     {
         // Step 1: Log request data
-        \Log::info('Received request data:', $request->all());
         
         $user = Auth::user();
-        \Log::info('Authenticated user:', ['id' => $user->id, 'name' => $user->name]);
 
         // Step 2: Validate the request
         try {
@@ -22,9 +20,7 @@ class RecitationController extends Controller
                 'durud_count' => 'nullable|min:0',
                 'para_count' => 'nullable|min:0',
             ]);
-            \Log::info('Validation successful:', $validatedData);
         } catch (\Exception $e) {
-            \Log::error('Validation failed:', ['error' => $e->getMessage()]);
             return back()->withErrors('Invalid data provided.')->withInput();
         }
 
@@ -35,12 +31,10 @@ class RecitationController extends Controller
            'durud_count' => (int) $request->durud_count,
             'quran_para_count' => (int) $request->para_count,
         ];
-        \Log::info('Prepared recitation data:', $recitationData);
 
         // Step 4: Save the recitation data
         try {
             $recitation = Recitation::create($recitationData);
-            \Log::info('Recitation data added:', $recitation->toArray());
         } catch (\Exception $e) {
             \Log::error('Failed to save recitation data:', ['error' => $e->getMessage()]);
             return back()->withErrors('Failed to save data. Please try again later.');
