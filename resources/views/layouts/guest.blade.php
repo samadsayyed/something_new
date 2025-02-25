@@ -15,14 +15,14 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0  " style="background-color: #dcfce4">
-            <div>
-                <a href="/">
-                    <img src="/Logo.webp" height="50px" class="block h-16 w-auto fill-current text-gray-800" />
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4" style="background-color: #e0ecfc">
+            <div class="w-full max-w-xs sm:max-w-md">
+                <a href="/" class="flex justify-center">
+                    <img src="/Logo.webp" class="h-16 w-auto" alt="Logo" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full max-w-xs sm:max-w-md mt-6 px-6 py-6 bg-white shadow-md overflow-hidden rounded-lg">
                 {{ $slot }}
             </div>
         </div>

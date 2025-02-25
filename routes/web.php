@@ -38,7 +38,6 @@ Route::prefix('durud-portal')->group(function () {
                 // Group by date (ignoring time)
                 return Carbon::parse($date->date)->format('Y-m-d');  // This gives you the date in 'YYYY-MM-DD' format
             });
-            \Log::info('Prepared recitation data: ' . json_encode($recitations, JSON_PRETTY_PRINT));
         // Prepare the recitations with their total count per day
         $dailyTotals = $recitations->map(function ($dayRecitations) {
             // Calculate the total recitations for the day
@@ -55,7 +54,6 @@ Route::prefix('durud-portal')->group(function () {
             ];
         });
 
-        // \Log::info('Prepared recitation data: ' . json_encode($recitationData, JSON_PRETTY_PRINT));
 
     
         return view('dashboard', compact('dailyTotals'));

@@ -18,7 +18,6 @@ class VerifyEmailController extends Controller
             // Find the user with this email
             $user = User::where('email', $email)->first();
 
-            \Log::info($user);
 
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);
@@ -27,7 +26,6 @@ class VerifyEmailController extends Controller
             $user->is_verified = 1;
             $user->save();
 
-            \Log::info($user);
 
             return redirect()->route('login');
         } catch (\Exception $e) {

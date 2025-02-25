@@ -11,7 +11,6 @@ class ApiTokenMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $validToken = env('API_SECRET_KEY', 'your-default-secret-key'); // Store this in .env
-        \Log::info($validToken);
         if ($request->bearerToken() !== $validToken) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight bg-blue-900">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
@@ -16,8 +16,8 @@
             <div class="mt-4">
                 <h3 class="text-md font-semibold text-gray-700 mb-2">Recitation History</h3>
                 <div class="overflow-x-auto bg-gray-50 p-3 rounded-md shadow" style="max-height: 400px; overflow-y: auto;">
-                    <table class="w-full text-sm border border-gray-200">
-                        <thead class="bg-gray-100 text-gray-700">
+                    <table class="w-full text-sm border border-gray-500">
+                        <thead class="bg-blue-900 text-white">
                             <tr>
                                 <th class="border px-2 py-1">Date</th>
                                 <th class="border px-2 py-1">Durud Count</th>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="px-6 py-2 bg-black text-white font-medium text-sm rounded-lg shadow-md hover:bg-green-800">
+                        class="px-6 py-2 bg-blue-900 text-white font-medium text-sm rounded-lg shadow-md hover:bg-green-800">
                         Submit
                     </button>
                 </div>

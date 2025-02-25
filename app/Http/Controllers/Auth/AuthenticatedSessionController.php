@@ -29,18 +29,15 @@ class AuthenticatedSessionController extends Controller
     
         $user = User::where('email', $credentials['email'])->first();
 
-        // \Log::info($user);
     
         if (!$user) {
             return back()->withErrors(['email' => 'The provided credentials are incorrect.']);
         }
     
-        if (!$user->is_verified == 0) {
-            \Log::info($user->is_verified);
+        if ($user->is_verified == 0) {
             return back()->withErrors(['email' => 'Your account is not verified. Please check your email.']);
         }
 
-        \Log::info($user->is_verified);
     
         $request->authenticate();
     
