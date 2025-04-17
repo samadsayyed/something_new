@@ -10,9 +10,8 @@ use App\Http\Middleware\ApiTokenMiddleware;
 use App\Http\Controllers\Api\RecitationApiController;
 use Carbon\Carbon;  
 
-Route::middleware([ApiTokenMiddleware::class])->group(function () {
-    Route::get('/durud-portal/api/recitations', [RecitationApiController::class, 'getCountsByCountry']);
-});
+// Public API endpoint for recitations
+Route::get('/durud-portal/api/recitations', [RecitationApiController::class, 'getCountsByCountry']);
 
 // Redirect `/` to `/durud-portal`
 Route::get('/', function () {
